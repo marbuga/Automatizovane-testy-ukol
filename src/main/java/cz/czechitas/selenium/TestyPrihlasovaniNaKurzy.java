@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class TestyPrihlasovaniNaKurzy {
 
     WebDriver prohlizec;
-
+    String PrihlasovaciHeslo = "Test22";
+    String NoveHeslo = "Test11";
     @BeforeEach
     public void setUp() {
 //      System.setProperty("webdriver.gecko.driver", System.getProperty("user.home") + "/Java-Training/Selenium/geckodriver");
@@ -23,12 +24,12 @@ public class TestyPrihlasovaniNaKurzy {
         prohlizec = new FirefoxDriver();
         prohlizec.manage().timeouts().implicitlyWait(600, TimeUnit.SECONDS);
     }
-
+    //TlacitkoUSpesnePrihlasen se mi nedari lokalizovat lepsim Xpath :-(
     @Test
     public void RodicSePrihlasiDoAplikace() {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
-        PrihlaseniUzivatele("mar.buga@seznam.cz","Test55");
-        WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("/html/body/div/header/nav/div/div[2]/div/span"));
+        PrihlaseniUzivatele("mar.buga@seznam.cz",PrihlasovaciHeslo);
+        WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("//div[contains(@class,'nav-item dropdown')]/span"));
         Assertions.assertEquals("Přihlášen",tlacitkoUspesnePrihlasen.getText());
 
     }
@@ -38,7 +39,7 @@ public class TestyPrihlasovaniNaKurzy {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
 
         VyberKurzuAlgoritmizace();
-        PrihlaseniUzivatele("mar.buga@seznam.cz","Test55");
+        PrihlaseniUzivatele("mar.buga@seznam.cz",PrihlasovaciHeslo);
         NovaPrihlaskaNaKurz();
 
         WebElement PrihlasenyZak = prohlizec.findElement(By.xpath("//div/h1"));
@@ -54,7 +55,7 @@ public class TestyPrihlasovaniNaKurzy {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
 
         VyberKurzuAlgoritmizace();
-        PrihlaseniUzivatele("mar.buga@seznam.cz","Test55");
+        PrihlaseniUzivatele("mar.buga@seznam.cz",PrihlasovaciHeslo);
         NovaPrihlaskaNaKurz();
 
         List<WebElement> ZalozkaNavigace = prohlizec.findElements(By.xpath("//div/a[contains(@class,'nav-item nav-link')]"));
@@ -72,7 +73,7 @@ public class TestyPrihlasovaniNaKurzy {
     @Test
     public void RodicSePrihlasiDoAplikaceAPrihlasiKurz(){
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
-        PrihlaseniUzivatele("mar.buga@seznam.cz", "Test55");
+        PrihlaseniUzivatele("mar.buga@seznam.cz", PrihlasovaciHeslo);
         WebElement TlacitkoVytvorNovouPrihlasku = prohlizec.findElement(By.cssSelector(".btn-info"));
         TlacitkoVytvorNovouPrihlasku.click();
         VyberKurzuAlgoritmizace();
@@ -93,7 +94,7 @@ public class TestyPrihlasovaniNaKurzy {
     @Test
     public void RodicSePrihlasiDoAplikaceAPrihlasiKurz_VerzePoUpraveZadani(){
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
-        PrihlaseniUzivatele("mar.buga@seznam.cz", "Test55");
+        PrihlaseniUzivatele("mar.buga@seznam.cz", PrihlasovaciHeslo);
         WebElement TlacitkoVytvorNovouPrihlasku = prohlizec.findElement(By.cssSelector(".btn-info"));
         TlacitkoVytvorNovouPrihlasku.click();
         VyberKurzuAlgoritmizace();
@@ -113,9 +114,27 @@ public class TestyPrihlasovaniNaKurzy {
 
     @Test
     public void RodicSiZmeniHeslo() {
-        String NoveHeslo = "Test66";
+
+        ZmenaPrihlasovacihoHEsla();
+
+        WebElement VyskakovaciOkno = prohlizec.findElement(By.xpath("//div/div[contains(@class,'toast-message')]"));
+        Assertions.assertEquals("Údaje byly úspěšně uloženy",VyskakovaciOkno.getText());
+
+
+
+    }
+    @Test
+    public void OvereniPlatnostiNovehoHesla() {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
-        PrihlaseniUzivatele("mar.buga@seznam.cz","Test55");
+        PrihlaseniUzivatele("mar.buga@seznam.cz",NoveHeslo);
+        WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("/html/body/div/header/nav/div/div[2]/div/span"));
+        Assertions.assertEquals("Přihlášen",tlacitkoUspesnePrihlasen.getText());
+
+    }
+
+    public void ZmenaPrihlasovacihoHEsla() {
+        prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
+        PrihlaseniUzivatele("mar.buga@seznam.cz",PrihlasovaciHeslo);
 
         List<WebElement> Prihlaseni = prohlizec.findElements(By.xpath("//div/a[contains(@class,'dropdown-toggle')]"));
         WebElement PrihlasenyRodic = Prihlaseni.get(1);
@@ -130,12 +149,11 @@ public class TestyPrihlasovaniNaKurzy {
         PoleKontrolaHesla.sendKeys(NoveHeslo);
         WebElement TlacitkoZmenit = prohlizec.findElement(By.xpath("//div/button[@class ='btn btn-primary']"));
         TlacitkoZmenit.click();
-        WebElement VyskakovaciOkno = prohlizec.findElement(By.xpath("//div/div[contains(@class,'toast-message')]"));
-
-        Assertions.assertEquals("Údaje byly úspěšně uloženy",VyskakovaciOkno.getText());
     }
 
-    private void VyberKurzuAlgoritmizace() {
+
+
+    public void VyberKurzuAlgoritmizace() {
         List<WebElement> ViceInfoOKurzech = prohlizec.findElements(By.xpath("//div/a[contains(@class,'btn btn-sm align-self-center btn-primary')]"));
         WebElement PrvniKurz = ViceInfoOKurzech.get(0);
         PrvniKurz.click();
