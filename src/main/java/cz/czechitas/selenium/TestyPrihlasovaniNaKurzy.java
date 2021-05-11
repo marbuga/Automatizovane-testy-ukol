@@ -24,6 +24,7 @@ public class TestyPrihlasovaniNaKurzy {
         prohlizec = new FirefoxDriver();
         prohlizec.manage().timeouts().implicitlyWait(600, TimeUnit.SECONDS);
     }
+
     //TlacitkoUSpesnePrihlasen se mi nedari lokalizovat lepsim Xpath :-(
     @Test
     public void RodicSePrihlasiDoAplikace() {
@@ -86,10 +87,7 @@ public class TestyPrihlasovaniNaKurzy {
         Assertions.assertEquals("Termín konání: 05.06. - 11.06.2021\n" +
                 "Základy algoritmizace", PrihlasenyKurz.getText());
 
-
-
     }
-
 
     @Test
     public void RodicSePrihlasiDoAplikaceAPrihlasiKurz_VerzePoUpraveZadani(){
@@ -119,10 +117,8 @@ public class TestyPrihlasovaniNaKurzy {
 
         WebElement VyskakovaciOkno = prohlizec.findElement(By.xpath("//div/div[contains(@class,'toast-message')]"));
         Assertions.assertEquals("Údaje byly úspěšně uloženy",VyskakovaciOkno.getText());
-
-
-
     }
+
     @Test
     public void OvereniPlatnostiNovehoHesla() {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
@@ -150,8 +146,6 @@ public class TestyPrihlasovaniNaKurzy {
         WebElement TlacitkoZmenit = prohlizec.findElement(By.xpath("//div/button[@class ='btn btn-primary']"));
         TlacitkoZmenit.click();
     }
-
-
 
     public void VyberKurzuAlgoritmizace() {
         List<WebElement> ViceInfoOKurzech = prohlizec.findElements(By.xpath("//div/a[contains(@class,'btn btn-sm align-self-center btn-primary')]"));
@@ -201,8 +195,6 @@ public class TestyPrihlasovaniNaKurzy {
         WebElement tlacitkoSubmit = prohlizec.findElement(By.xpath("//div/button[contains(@class,'btn btn-primary')]"));
         tlacitkoSubmit.click();
     }
-
-
 
     @AfterEach
     public void tearDown() {
