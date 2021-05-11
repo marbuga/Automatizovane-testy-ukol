@@ -123,7 +123,7 @@ public class TestyPrihlasovaniNaKurzy {
     public void OvereniPlatnostiNovehoHesla() {
         prohlizec.navigate().to("https://cz-test-jedna.herokuapp.com/");
         PrihlaseniUzivatele("mar.buga@seznam.cz",NoveHeslo);
-        WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("/html/body/div/header/nav/div/div[2]/div/span"));
+        WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("//div[contains(@class,'nav-item dropdown')]/span"));
         Assertions.assertEquals("Přihlášen",tlacitkoUspesnePrihlasen.getText());
 
     }
