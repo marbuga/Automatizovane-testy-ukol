@@ -26,7 +26,6 @@ public class TestyPrihlasovaniNaKurzy {
         prohlizec.manage().timeouts().implicitlyWait(600, TimeUnit.SECONDS);
     }
 
-    //TlacitkoUSpesnePrihlasen se mi nedari lokalizovat lepsim Xpath :-(
     @Test
     public void rodicSeMusiBytSchopenPrihlasitDoAplikace() {
         prohlizec.navigate().to(URL_APLIKACE);
@@ -34,7 +33,6 @@ public class TestyPrihlasovaniNaKurzy {
 
         WebElement tlacitkoUspesnePrihlasen = prohlizec.findElement(By.xpath("//div[contains(@class,'nav-item dropdown')]/span"));
         Assertions.assertEquals("Přihlášen", tlacitkoUspesnePrihlasen.getText());
-
     }
 
     @Test
